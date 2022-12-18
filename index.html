@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <title>ashramX</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto+Mono&display=swap" rel="stylesheet">
+	<style>
+		html.has-scroll-smooth {
+			overflow: hidden
+		}
+	
+		html.has-scroll-dragging {
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none
+		}
+	
+		.has-scroll-smooth body {
+			overflow: hidden
+		}
+	
+		.has-scroll-smooth [data-scroll-container] {
+			min-height: 100vh
+		}
+	
+		[data-scroll-direction="horizontal"] [data-scroll-container] {
+			height: 100vh;
+			display: inline-block;
+			white-space: nowrap
+		}
+	
+		[data-scroll-direction="horizontal"] [data-scroll-section] {
+			display: inline-block;
+			vertical-align: top;
+			white-space: nowrap;
+			height: 100%
+		}
+	
+		.c-scrollbar {
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 11px;
+			height: 100%;
+			transform-origin: center right;
+			transition: transform 0.3s, opacity .3s;
+			opacity: 0
+		}
+	
+		.c-scrollbar:hover {
+			transform: scaleX(1.45)
+		}
+	
+		.c-scrollbar:hover,
+		.has-scroll-dragging .c-scrollbar,
+		.has-scroll-scrolling .c-scrollbar {
+			opacity: 1
+		}
+	
+		[data-scroll-direction="horizontal"] .c-scrollbar {
+			width: 100%;
+			height: 10px;
+			top: auto;
+			bottom: 0;
+			transform: scaleY(1)
+		}
+	
+		[data-scroll-direction="horizontal"] .c-scrollbar:hover {
+			transform: scaleY(1.3)
+		}
+	
+		.c-scrollbar_thumb {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: #000;
+			opacity: .5;
+			width: 7px;
+			border-radius: 10px;
+			margin: 2px;
+			cursor: -webkit-grab;
+			cursor: grab
+		}
+	
+		.has-scroll-dragging .c-scrollbar_thumb {
+			cursor: -webkit-grabbing;
+			cursor: grabbing
+		}
+	
+		[data-scroll-direction="horizontal"] .c-scrollbar_thumb {
+			right: auto;
+			bottom: 0
+		}
+	
+		* {
+			outline: none;
+			box-sizing: border-box
+		}
+	
+		body {
+			/*background-color: #1234c4;*/
+			color: #000;
+			margin: 0;
+			padding: 0;
+			font-family: "Michroma", sans-serif;
+			-webkit-text-size-adjust: 100%;
+			-webkit-font-smoothing: antialiased;
+			box-sizing: border-box;
+			transition: background-color .5s ease
+		}
+	
+		body.dark {
+			/*background-color: #171727*/
+			background-color: #1233c0;
+		}
+
+		body.dark {
+			color: #fff;
+		}
+
+	
+		a {
+			color: #fff;
+			text-decoration: none
+		}
+	
+		.loading_screen {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background: #000;
+			z-index: 10;
+			transition: all 1s cubic-bezier(0.75, -0.01, 0.14, 1);
+			clip-path: inset(0% 0% 0% 0%)
+		}
+	
+		.loading_screen.hide {
+			pointer-events: none;
+			clip-path: inset(0% 0% 100% 0%)
+		}
+	
+		.loading_screen .loading_circle {
+			position: fixed;
+			width: 70vh;
+			height: 70vh;
+    		display: inline-block;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			/*border-radius: 50%;
+			border: 2px solid #45495d*/
+		}
+		.loading_screen .loading_circle img {
+			width: 100%;
+		}
+/*
+		.loading_screen .loading_circle:before {
+    border-bottom: 54px solid white;
+}
+.loading_screen .loading_circle:before, .loading_screen .loading_circle:before {
+    border-left: 36px solid transparent;
+    border-right: 36px solid transparent;
+}
+.loading_screen .loading_circle:before {
+    z-index: -1;
+    margin-top: -6px;
+    margin-left: -6px;
+}
+.loading_screen .loading_circle:before {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+}
+
+.loading_screen .loading_circle:before {
+	position:absolute;
+    content:"";
+	width: 0;
+    height: 0;
+    border-left: 36px solid transparent;
+    border-right: 36px solid transparent;
+}
+
+.loading_screen .loading_circle:after {
+	position:absolute;
+    content:"";
+	width: 0;
+    height: 0;
+    border-bottom: 45px solid #000;
+}
+.loading_screen .loading_circle:after, .loading_screen .loading_circle:after {
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+}
+.loading_screen .loading_circle:after, .loading_screen .loading_circle:before {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+}
+	*/
+		.evoulve_circle {
+			position: fixed;
+			width: 70vh;
+    		height: 70vh;
+    		clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			overflow: hidden;
+			/*border-radius: 50%*/
+		}
+	
+		.overlay,
+		.show {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			overflow: hidden;
+			/*border-radius: 50%*/
+		}
+	
+		.light {
+			/*border-radius: 50%;*/
+			box-shadow: inset -200px 20px 80px #ffe2b2;
+			mix-blend-mode: overlay;
+			opacity: 1
+		}
+	
+		.color {
+			background: #ff8a77;
+			mix-blend-mode: color;
+			opacity: .4
+		}
+	
+		.reflect {
+			border-radius: 50%;
+			box-shadow: inset -20px 20px 60px #c030ce;
+			mix-blend-mode: overlay;
+			opacity: 0
+		}
+	
+		.saturate {
+			background: #03a1ff;
+			mix-blend-mode: lighten;
+			opacity: 1
+		}
+	
+		.grey {
+			background: #c1cdff;
+			mix-blend-mode: color;
+			transition: opacity .6s ease;
+			opacity: 0
+		}
+	
+		section {
+			min-height: 100vh;
+			position: relative;
+			z-index: 1;
+			justify-content: center;
+			align-items: center;
+			padding: 20vh 0;
+			overflow: hidden
+		}
+	
+		section.black {
+			background-color: #000
+		}
+	
+		section .wrapper {
+			width: 80%;
+			margin: 0 auto
+		}
+	
+		section .wrapper.intro {
+			padding: 30vh 0;
+			position: relative;
+			z-index: 2
+		}
+	
+		section h1 {
+			font-weight: 400;
+			width: 40vw;
+			top: -20vh;
+			font-size: 12vw;
+			word-wrap: break-word;
+			text-transform: uppercase;
+			position: relative;
+			line-height: 1;
+			margin: 0;
+			padding: 0
+		}
+	
+		section h1.bottom {
+			top: 0
+		}
+	
+		section h1 span {
+			position: relative;
+			display: inline-block
+		}
+	
+		section p {
+			text-transform: uppercase;
+			width: 100%;
+			font-size: 3vw;
+			letter-spacing: 3px;
+			margin-bottom: 0;
+			padding-bottom: 0
+		}
+	
+		hr {
+			padding-bottom: 10vh;
+			margin-bottom: 10vh;
+			border: none;
+			border-bottom: 2px solid #bababa
+		}
+	
+		section .expertise {
+			display: flex;
+			justify-content: space-between
+		}
+
+		section .expertise p {
+			width: 90%;
+			max-width: 800px;
+			font-size: 18px;
+			letter-spacing: 1px;
+			font-family: "Roboto Mono", monospace;
+		}
+	
+		section p.small {
+			text-transform: none;
+			width: 90%;
+			max-width: 300px;
+			font-size: 14px;
+			letter-spacing: 1px;
+			font-family: "Roboto Mono", monospace;
+			border-bottom: none;
+			padding-bottom: 0;
+			margin-bottom: 0
+		}
+	
+		section ul {
+			padding: 0;
+			width: 90%;
+			max-width: 400px;
+			margin-top: 150px
+		}
+	
+		section ul li {
+			padding: 10px 0;
+			list-style: none;
+			font-size: 14px;
+			letter-spacing: 1px;
+			font-family: "Roboto Mono", monospace;
+			border-bottom: 1px solid #BABABA;
+			display: flex;
+			justify-content: space-between
+		}
+	
+		section ul li span {
+			opacity: .5
+		}
+	
+		section .about {
+			position: absolute;
+			right: 5vw;
+			bottom: 20vh;
+			max-width: 250px;
+			width: 80%
+		}
+	
+		section .about p.small {
+			font-size: 11px;
+			text-transform: uppercase;
+			padding: 25px 0;
+		}
+
+		section .about p.small.border {
+			border-top: 1px solid #000;
+			border-bottom: 1px solid #000;
+		}
+
+		section .about .small-names p {
+			font-size: 14px;
+			letter-spacing: 1px;
+			font-family: "Roboto Mono";
+			text-transform: uppercase;
+		}
+	
+		section .about p.small .arrow svg {
+			position: relative;
+			top: 5px;
+			left: 20px;
+			height: 25px;
+			width: 25px
+		}
+	
+		section .about p.small .arrow.flipped svg {
+			transform: scaleY(-1)
+		}
+
+		.icon-triangle {
+			width: 40px;
+			height: 40px;
+		}
+
+		.icon-triangle.down {
+			transform: rotate(180deg);
+		}
+
+		.icon-triangle.right {
+			transform: rotate(90deg);
+		}
+	
+		.arrow svg * {
+			fill: none;
+			stroke: #000;
+			stroke-miterlimit: 10;
+			stroke-width: 3px
+		}
+	
+		.evoulve_wires {
+			position: fixed;
+			width: 70vh;
+			height: 70vh;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%)
+		}
+	
+		.evoulve_wires .evoulve_wires-inner {
+			width: 100%;
+			height: 100%;
+			background-color: #000
+		}
+	
+		.evoulve_wires .evoulve_wires-overlay {
+			width: 100%;
+			height: 100%;
+			mix-blend-mode: overlay;
+			position: absolute;
+			top: 0;
+			left: 0;
+			opacity: .2
+		}
+	
+		.evoulve_wires img {
+			width: 100%;
+			height: 100%;
+		}
+	
+		html:not(.has-scroll-smooth) section {
+			clip: rect(0, auto, auto, 0);
+			-webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0);
+			clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0)
+		}
+
+		.triangle-bottom {
+			position: absolute;
+			height: 20%;
+			bottom: -13%;
+			left: -2%;
+			width: 104%;
+			background: white;
+			z-index: 23;
+		}
+
+		.triangle-right {
+			position: absolute;
+			height: 123%;
+			top: -23%;
+			right: -28.5%;
+			width: 56%;
+			transform: rotate(330deg);
+			background: white;
+			z-index: 23;
+		}
+
+		.triangle-left {
+			position: absolute;
+			height: 123%;
+			top: -23%;
+			left: -28.5%;
+			width: 56%;
+			transform: rotate(30deg);
+			background: white;
+			z-index: 23;
+		}
+
+		body.dark .triangle-left,
+		body.dark .triangle-right,
+		body.dark .triangle-bottom {
+			background-color: #1233c0;
+		}
+
+		.footer {
+			position: absolute;
+			bottom: 20px;
+			left: 0px;
+			display: flex;
+			width: 100%;
+		}
+		.footer-inner {
+			width: 80%;
+    		margin: 0 auto; display: flex;
+		}
+		@media screen and (max-width: 1250px) {
+			.footer-inner {
+				flex-direction: column;
+			}
+		}
+		.footer-left {
+			display: flex;
+			align-items: center;
+			gap: 20px;     width: 25%;
+		}
+		.footer-left p {
+			white-space:nowrap;
+			margin: 0px;
+		}
+		.footer-center {
+			text-align: center;
+			font-size: 20px;
+			width: 50%;
+			margin: auto;
+		}
+		.footer-right {
+			width: 25%;
+		}
+	
+		@media screen and (max-width: 500px) {
+	
+			.evoulve_circle,
+			.evoulve_wires,
+			.loading_screen .loading_circle {
+				width: 70vw;
+				height: 70vw
+			}
+	
+			section {
+				padding: 10vh 0
+			}
+	
+			section p {
+				width: 100%;
+				font-size: 4vw;
+				line-height: 1.8;
+				letter-spacing: 1px;
+				padding-bottom: 10vw;
+				margin-bottom: 10vw
+			}
+	
+			section h1 {
+				width: 60vw;
+				font-size: 20vw;
+				top: 0
+			}
+	
+			section h1.bottom {
+				top: 0
+			}
+	
+			section .wrapper.intro {
+				padding: 0
+			}
+	
+			hr {
+				padding-bottom: 0;
+				margin-bottom: 50px;
+				margin-top: 0;
+				padding-top: 0
+			}
+	
+			section .about {
+				left: 10vw;
+				bottom: 15vh
+			}
+	
+			section ul {
+				margin-top: 50px;
+				padding-bottom: 50px
+			}
+	
+			section .expertise {
+				display: block
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="evoulve_circle">
+		<!--<div class="triangle-left"></div>
+		<div class="triangle-right"></div>
+		<div class="triangle-bottom"></div>-->
+		<canvas id="glslCanvas" data-fragment="
+	#ifdef GL_ES
+	precision lowp float;
+	#endif
+	
+	#define TAU 6.28318530718
+	
+	uniform vec2 u_resolution;
+	uniform vec2 u_mouse;
+	uniform float u_time;
+	
+	// EASE IN/OUT AROUND POINT //
+	float pointEase(float x, float t, float r, float a) {
+		if (x<(t-r) || x >(t+r)) return 0.0;
+	
+		float n = 0.0;
+		x = t-x;
+		n = ((1.0 + cos((x * ((TAU/2.0) * (1.0/r))))) / 2.0) * a;
+		return n;
+	}
+	
+	void main() {
+		vec2 st = gl_FragCoord.xy/u_resolution;
+		float aspect = u_resolution.x / u_resolution.y;
+		float distort = st.x / st.y;
+		float t = u_time * 0.5;
+		float r = 0.8;
+	
+	
+		// move origins of circles //
+		float dx1 = 0.5 + (sin(t + 3000.00) * sin(t * 0.33) * 0.5);
+		float dy1 = 0.5 + (cos(t + 1000.00) * cos(t * 0.23) * 0.5);
+		float dx2 = 0.5 + (sin(t + 5000.00) * sin(t * 0.44) * 0.5);
+		float dy2 = 0.5 + (cos(t + 2000.00) * cos(t * 0.43) * 0.5);
+		float dx3 = 0.5 + (sin(t + 8000.00) * sin(t * 0.55) * 0.5);
+		float dy3 = 0.5 + (cos(t + 3000.00) * cos(t * 0.63) * 0.5);
+	
+	
+		// get sinuous amplitude based on distance from origins //
+		float x1 = pointEase(st.x, dx1, r, 1.0);
+		float y1 = pointEase(st.y, dy1, r * aspect, 1.0);
+		float a1 = x1 * y1;
+		float x2 = pointEase(st.x, dx2, r, 1.0);
+		float y2 = pointEase(st.y, dy2, r * aspect, 1.0);
+		float a2 = x2 * y2;
+		float x3 = pointEase(st.x, dx3, r, 1.0);
+		float y3 = pointEase(st.y, dy3, r * aspect, 1.0);
+		float a3 = x3 * y3;
+	
+		// colors //
+		vec3 c1 = (1.0 - (a2 * a3)) * a1 * vec3(1.0,0.0,1.0);
+		vec3 c2 = (1.0 - (a1 * a3)) * a2 * vec3(1.0,0.0,1.0);
+		vec3 c3 = (1.0 - (a1 * a2)) * a3 * vec3(1.0,0.0,1.0);
+		vec3 bg = vec3(0.1,0.0,0.0);
+	
+		vec3 color = (c1 + c2 - c3);
+		vec3 mixed = (0.0 - color) * bg;
+		color += bg;
+	
+	
+		gl_FragColor = vec4(color,1.0);
+	}
+	"></canvas>
+        <div class="overlay color"></div>
+        <div class="overlay saturate"></div>
+        <div class="overlay light"></div>
+        <div class="overlay reflect"></div>
+        <div class="overlay grey" id="grey"></div>
+    </div>
+    <div class="loading_screen" id="loading_screen">
+        <div class="loading_circle">
+			<img src="https://uploads-ssl.webflow.com/639e25ce8defc0553fd078c5/639f860c882c7f9f566cd5ea_triangle-blank.svg" alt="">
+		</div>
+    </div>
+    <div id="js-scroll" class="main" data-scroll-container>
+        <section data-scroll-section>
+            <div class="title wrapper">
+				<h1 data-scroll data-scroll-delay="0.09" data-scroll-speed="-6" data-scroll-offset="-50%, 20%"><img src="https://uploads-ssl.webflow.com/639e25ce8defc0553fd078c5/639f817c7f607a8e728cff13_ashram.svg" alt=""></h1>
+                <div class="about">
+                    <p class="small border">/ founder collective</p>
+                    <p class="small"> Scroll Down <span class="arrow flipped"> <svg viewBox="0 0 80 80" class="cl-t">
+                                <polyline points="19.89 15.25 64.03 15.25 64.03 59.33"></polyline>
+                                <line x1="64.03" y1="15.25" x2="14.03" y2="65.18"></line>
+                            </svg> </span> </p>
+                </div>
+            </div>
+        </section>
+        <section class="black" data-scroll-section>
+            <div class="evoulve_wires">
+                <div class="evoulve_wires-inner" data-scroll data-scroll-speed="-10" data-scroll-offset="-100%, -100%">
+                    <img src="https://uploads-ssl.webflow.com/639e25ce8defc0553fd078c5/639f860c989451563c2cdd6b_new-triangle.svg" />
+                    <div id="bgOverlay" class="evoulve_wires-overlay"></div>
+                </div>
+            </div>
+            <div class="intro wrapper" id="colorOverlay" data-scroll data-scroll-delay="0.07" data-scroll-speed="-3"
+                data-scroll-offset="-50%, 20%">
+                <p class="small">/ ABOUT</p>
+                <p>a community of founders and domain experts ideating, invalidating, starting and scaling enterprises through a systematic process -this is venture 3.0.</p>
+                <div class="expertise">
+					<div>
+						<br><br><br>
+						<p>Our technologists research key areas to uncover new ways to help companies do
+							different things and do things differently. <br><br> We bring in exceptional founders and
+							collaborate to ideate and vet opportunities and markets. We then go on a truth seeking mission
+							aid talk to domain experts and potential customers to see if an opportune exists. If it does, we
+							fund the company and help launch and scale it. <br><br><br><br></p>
+					</div>
+                    <ul>
+                        <li>ideation<span>01</span></li>
+                        <li>vetting<span>02</span></li>
+                        <li>truth-seeking <span>03</span></li>
+                        <li>customer validation <span>04</span></li>
+                        <li>funding <span>05</span></li>
+                        <li>lauch <span>06</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section data-scroll-section>
+            <div data-scroll id="greyIn" data-scroll-offset="-30%, -100%" data-scroll-repeat></div>
+				<div class="title wrapper">
+                <p class="small">/ proces</p>
+				<div>
+					<p>$5.63B</p>
+					<p class="small">Exit enterprises <br> value created</p>
+				</div>
+				<div>
+					<p>623</p>
+					<p class="small">New domestic <br> jobs created</p>
+				</div>
+				<div>
+					<p>165M</p>
+					<p class="small">Consumers of <br> our products</p>
+				</div>
+				<div>
+					<p>64</p>
+					<p class="small">Founders per <br> year</p>
+				</div>
+                <div class="about">
+					<p class="small">/ people</p>
+					<div class="small-names">
+						<p>Evan Ezen</p>
+						<p>Matt Dukes</p>
+						<p>Ahmed Beshrey</p>
+						<p>Rebecca Weisinger</p>
+						<p>Rahul Sharma</p>
+						<p>Evan Ezen</p>
+						<p>Matt Dukes</p>
+						<p>Ahmed Beshrey</p>
+						<p>Rebecca Weisinger</p>
+						<p>Rahul Sharma</p>
+						<p>... and more</p>
+					</div>
+                </div>
+				<div class="footer">
+					<div class="footer-inner">
+						<div class="footer-left">
+							<img class="icon-triangle right" src="https://uploads-ssl.webflow.com/639e25ce8defc0553fd078c5/639f817c84d8d4364d94ee48_icon-triangle.svg" alt="">
+							<p class="small"> / inquire on membership<p>
+						</div>
+						<p class="footer-center"></p>
+						<div class="footer-right"></div>
+					</div>
+				</div>
+            </div>
+        </section>
+    </div>
+	
+	
+	<script src="./assets/js/script.js"></script>
+	
+	</body>
+</html>
