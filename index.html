@@ -334,7 +334,9 @@
 			font-size: 3vw;
 			letter-spacing: 3px;
 			margin-bottom: 0;
-			padding-bottom: 0
+			padding-bottom: 0;
+			margin-block-start: 1em;
+			line-height: normal;
 		}
 	
 		hr {
@@ -400,7 +402,6 @@
 		}
 	
 		section .about p.small {
-			font-size: 11px;
 			text-transform: uppercase;
 			padding: 25px 0;
 		}
@@ -455,7 +456,7 @@
 			height: 70vh;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%, -50%)
+			transform: translate(-50%, -50%);
 		}
 	
 		.evoulve_wires .evoulve_wires-inner {
@@ -539,12 +540,12 @@
 				flex-direction: column;
 			}
 		}
-		.footer-left {
+		.membership {
 			display: flex;
 			align-items: center;
-			gap: 20px;     width: 25%;
+			gap: 20px;
 		}
-		.footer-left p {
+		.membership p {
 			white-space:nowrap;
 			margin: 0px;
 		}
@@ -600,12 +601,46 @@
 				margin-top: 0;
 				padding-top: 0
 			}
+
+			section .figures-value {
+				margin: 5px 0px;
+			}
+
+			section .figures-value  p {
+				margin: 0px;
+    			padding-bottom: 0px;
+			}
+
+			section .figures-value  p.small {
+				margin: 0px;
+			}
 	
 			section .about {
 				left: 10vw;
-				bottom: 15vh
+    			bottom: 15vh;
 			}
-	
+
+			section .wrapper .people {
+				position: relative;
+				top: 0px;
+				left: 0px;
+			}
+
+			section .wrapper .people .small-names p {
+				margin: 0px;
+    			padding-bottom: 2px;
+			}
+
+			.footer {
+				position: relative;
+				bottom: 0px;
+				margin-top: 25px;
+			}
+
+			.footer-inner {
+				margin: 0px;
+			}
+
 			section ul {
 				margin-top: 50px;
 				padding-bottom: 50px
@@ -743,24 +778,24 @@
         <section data-scroll-section>
             <div data-scroll id="greyIn" data-scroll-offset="-30%, -100%" data-scroll-repeat></div>
 				<div class="title wrapper">
-                <p class="small">/ proces</p>
-				<div>
+                <p class="small">/ FIGURES</p>
+				<div class="figures-value">
 					<p>$5.63B</p>
 					<p class="small">Exit enterprises <br> value created</p>
 				</div>
-				<div>
+				<div class="figures-value">
 					<p>623</p>
 					<p class="small">New domestic <br> jobs created</p>
 				</div>
-				<div>
+				<div class="figures-value">
 					<p>165M</p>
 					<p class="small">Consumers of <br> our products</p>
 				</div>
-				<div>
+				<div class="figures-value">
 					<p>64</p>
 					<p class="small">Founders per <br> year</p>
 				</div>
-                <div class="about">
+                <div class="about people">
 					<p class="small">/ people</p>
 					<div class="small-names">
 						<p>Evan Ezen</p>
@@ -778,12 +813,10 @@
                 </div>
 				<div class="footer">
 					<div class="footer-inner">
-						<div class="footer-left">
+						<div class="membership">
 							<img class="icon-triangle right" src="https://uploads-ssl.webflow.com/639e25ce8defc0553fd078c5/639f817c84d8d4364d94ee48_icon-triangle.svg" alt="">
-							<p class="small"> / inquire on membership<p>
+							<p class="small"> / inquire on membership</p>
 						</div>
-						<p class="footer-center"></p>
-						<div class="footer-right"></div>
 					</div>
 				</div>
             </div>
